@@ -3,7 +3,8 @@
 ## Introduction
 
 PowerPoint Presenter Note Extractor (P3NE) is a simple, user-friendly application that allows users to extract presenter notes from PowerPoint presentations (.pptx files) and save them as text files. This tool is designed to be intuitive and efficient, making it easy for anyone to quickly retrieve notes from their presentations.
-Features
+
+## Features
 - Extract notes from PowerPoint slides.
 - Save notes as a text file.
 - Simple and intuitive graphical user interface.
