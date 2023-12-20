@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter import filedialog, messagebox
 from pptx import Presentation
 from pptx.exc import PackageNotFoundError
-import os
 
 class PPTXNotesExtractor:
     def __init__(self, root):
@@ -30,20 +29,34 @@ class PPTXNotesExtractor:
     def save_notes(self, notes):
         if not notes:
             messagebox.showinfo("No Notes", "No notes were found in the presentation.")
-            return
+            return False
+
         file_path = filedialog.asksaveasfilename(defaultextension=".txt",
-                                                 filetypes=[("Text files", "*.txt")])
-        if file_path:
-            with open(file_path, 'w', encoding='utf-8') as file:
-                file.writelines(notes)
-            messagebox.showinfo("Success", "Notes saved successfully!")
+                                                filetypes=[("Text files", "*.txt")])
+
+        # Check if the save dialog was cancelled
+        if not file_path:
+            messagebox.showinfo("Cancelled", "Operation cancelled by user.")
+            return False
+
+        with open(file_path, 'w', encoding='utf-8') as file:
+            file.writelines(notes)
+        messagebox.showinfo("Success", "Notes saved successfully!")
+        return True
+
+
 
     def open_file_dialog(self):
         file_path = filedialog.askopenfilename(filetypes=[("PowerPoint files", "*.pptx")])
         if file_path:
             notes = self.extract_notes(file_path)
             if notes is not None:
-                self.save_notes(notes)
+                saved = self.save_notes(notes)
+                self.root.destroy()  # Close the app after attempting to save
+        else:
+            self.root.destroy()  # Close the app if file dialog is cancelled
+
+
 
 root = tk.Tk()
 app = PPTXNotesExtractor(root)
